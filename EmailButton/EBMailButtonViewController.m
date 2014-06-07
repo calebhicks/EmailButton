@@ -8,7 +8,9 @@
 
 #import "EBMailButtonViewController.h"
 
-@interface EBMailButtonViewController ()
+@import MessageUI;
+
+@interface EBMailButtonViewController () <MFMailComposeViewControllerDelegate>
 
 @end
 
@@ -16,8 +18,19 @@
 
 - (IBAction)sendEmail:(id)sender {
 
+    MFMailComposeViewController *mailView = [[MFMailComposeViewController alloc]init];
+    mailView.mailComposeDelegate = self;
+    [mailView setSubject:@"Look! It's a Subject!"];    
     
     
+    if ([MFMailComposeViewController canSendMail]) {
+        [self presentViewController:mailView animated:YES completion:nil];
+    }
+    
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
